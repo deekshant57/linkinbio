@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { db, storage } from "../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
-const Edit = () => {
+const Create = () => {
   const [file, setFile] = useState("");
   const [percent, setPercent] = useState(0);
   const [userName, setUserName] = useState("himvais");
@@ -111,8 +111,7 @@ const Edit = () => {
         <input
           className="mt-2 border-2 py-1 px-2 w-6/12"
           type="text"
-          //   value="Himanshu Vaishnav"
-          defaultValue="Himanshu"
+          value="Himanshu Vaishnav"
         />
         <p className="text-xs text-slate-500 mt-2">
           <i className="fa-duotone fa-input-text"></i>&nbsp;USER NAME
@@ -223,4 +222,4 @@ const Edit = () => {
   );
 };
 
-export default Edit;
+export default Create;

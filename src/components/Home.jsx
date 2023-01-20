@@ -20,6 +20,7 @@ const Home = () => {
         querySnapshot.forEach((doc) => {
           // doc.data() is never undefined for query doc snapshots
           newData = doc.data();
+          //   console.log(newData);
           setData([...data, newData]);
         });
       } catch (error) {
@@ -57,26 +58,17 @@ const Home = () => {
                       className="text-xl font-Inter capitalize"
                       target="_blank"
                     >
-                      {item.portalName}
+                      {item.portalName} &nbsp;
+                      <i className="fa-duotone fa-arrow-up-right"></i>
                     </a>
                   </li>
                 );
               })}
-
-              {/* <li className="mt-2">
-                <a href="/" className="text-xl font-Inter" target="_blank">
-                  Twitter
-                </a>
-              </li>
-              <li className="mt-2">
-                <a href="/" className="text-xl font-Inter" target="_blank">
-                  Instagram
-                </a>
-              </li> */}
             </ul>
             <footer className="bg-white lg:text-left fixed bottom-0 my-4">
               <a className="text-gray-800 font-Inter" href="/">
-                Create your own
+                Create your own &nbsp;
+                <i className="fa-duotone fa-arrow-up-right"></i>
               </a>
             </footer>
           </div>
