@@ -1,26 +1,35 @@
 import React, { useEffect, useState } from "react";
-import { doc, getDoc, getDocs, where } from "firebase/firestore";
+import { getDocs, where } from "firebase/firestore";
 import { db } from "../firebase";
 
-import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
+import { collection, query } from "firebase/firestore";
+import { useNavigate, useParams } from "react-router-dom";
+import Error from "./Error";
 let newData;
 const key = process.env.REACT_APP_API_KEY;
 
 const Home = () => {
   const [data, setData] = useState([]);
+  const params = useParams();
+  console.log(params);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const q = query(
-      collection(db, "links"),
-      where("userName", "==", "himvais")
+      collection(db, "User_Data"),
+      where("userName", "==", params.userName)
     );
     const fetchData = async () => {
       try {
         const querySnapshot = await getDocs(q);
+        const user = [];
+
         querySnapshot.forEach((doc) => {
           // doc.data() is never undefined for query doc snapshots
           newData = doc.data();
-          //   console.log(newData);
+          user.push({ ...doc.data() });
+          console.log(user.length);
+
           setData([...data, newData]);
         });
       } catch (error) {
@@ -33,8 +42,7 @@ const Home = () => {
 
   return (
     <div>
-      {/* {process.env.REACT_APP_API_KEY} */}
-      <div className="container max-w-xl m-auto">
+      <div>
         {data.length > 0 ? (
           <div className="flex flex-col gap-y-4 px-4 pt-10 h-screen center">
             <div>
@@ -54,11 +62,12 @@ const Home = () => {
                 return (
                   <li className="" key={index}>
                     <a
-                      href={item.link}
+                      href={item.url}
                       className="text-xl font-Inter capitalize"
                       target="_blank"
+                      rel="noreferrer"
                     >
-                      {item.portalName} &nbsp;
+                      {item.hostName} &nbsp;
                       <i className="fa-duotone fa-arrow-up-right"></i>
                     </a>
                   </li>
@@ -72,7 +81,9 @@ const Home = () => {
               </a>
             </footer>
           </div>
-        ) : null}
+        ) : (
+          <Error></Error>
+        )}
       </div>
     </div>
   );

@@ -1,19 +1,11 @@
-import {
-  addDoc,
-  collection,
-  doc,
-  serverTimestamp,
-  setDoc,
-  Timestamp,
-  updateDoc,
-} from "firebase/firestore";
+import { addDoc, collection, doc, setDoc, Timestamp } from "firebase/firestore";
 import React, { useEffect, useRef, useState } from "react";
 import { db, storage } from "../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { Link, useNavigate } from "react-router-dom";
-import userImg from "../assets/user.jpg";
+import userProfile from "../assets/user.jpg";
+import { useNavigate } from "react-router-dom";
 
-const Edit = ({ userId, userData }) => {
+const Create = ({ userId }) => {
   const [file, setFile] = useState("");
   const [percent, setPercent] = useState(0);
   const [imgUrl, setImgUrl] = useState("");
@@ -21,8 +13,15 @@ const Edit = ({ userId, userData }) => {
   const [isFilePicked, setIsFilePicked] = useState(false);
   const navigate = useNavigate();
 
-  const [inputList, setInputList] = useState(userData);
-  console.log(userData);
+  const [inputList, setInputList] = useState({
+    userName: "",
+    name: "",
+    role: "",
+    img: "",
+    description: "",
+    links: [],
+    clickCount: 0,
+  });
 
   // Handle file upload event and update state
 
@@ -111,25 +110,20 @@ const Edit = ({ userId, userData }) => {
     console.log(inputList);
     try {
       // need to add uid as doc id
-      //   await setDoc(doc(db, "User_Data", userId), {
-      //     ...inputList,
-      //     createdAt: Timestamp.now(),
-      //   });
-
-      const docRef = doc(db, "User_Data", userId);
-      const updatedData = { ...inputList, updatedaAt: serverTimestamp() };
-      await updateDoc(docRef, updatedData);
-
-      navigate(`/${inputList.userName}`);
+      await setDoc(doc(db, "User_Data", userId), {
+        ...inputList,
+        createdAt: Timestamp.now(),
+      });
+      navigate("/:userName");
     } catch (error) {
       console.log(error);
     }
   };
   return (
     <div className="container max-w-xl m-auto">
-      <button onClick={() => navigate("/")}>
+      <a href="/">
         <i className="fa-duotone fa-arrow-left"></i>&nbsp;Home
-      </button>
+      </a>
       <h4 className="text-2xl mt-2 font-Inter font-medium antialiased">
         Customise Profile
       </h4>
@@ -140,18 +134,22 @@ const Edit = ({ userId, userData }) => {
             <i className="fa-duotone fa-user"></i>&nbsp;PROFILE PICTURE
           </p>
           <div className="flex justify-content-start py-2 gap-2">
+            {/* {inputList.img ? (
             <img
-              className="w-20 rounded-full"
-              src={
-                file
-                  ? URL.createObjectURL(file)
-                  : inputList.img
-                  ? inputList.img
-                  : userImg
-              }
+              className="w-20 fa-solid fa-star"
+              src={`${inputList.img}`}
               alt=""
             />
-            <div className="flex flex-col justify-center">
+          ) : (
+            <img className="w-20 rounded-full" src={userProfile} alt="" />
+          )} */}
+            <img
+              className="w-20 rounded-full"
+              src={file ? URL.createObjectURL(file) : userProfile}
+              alt=""
+            />
+            <div className="flex items-center">
+              {/* <a href="/" className="font-Inter py-1 text-slate-700"> */}
               <input
                 type="file"
                 name="img"
@@ -161,19 +159,16 @@ const Edit = ({ userId, userData }) => {
                 onChange={(e) => handleImage(e)}
                 hidden
               />
-              <button
-                onClick={handleImgClickUpload}
-                className="font-Inter py-1 text-slate-700"
-              >
-                <i className="fa-duotone fa-rotate-left"></i>&nbsp;Change
-                Picture
-              </button>
-              <button
-                onClick={handleDeleteImg}
-                className="font-Inter py-1 text-slate-700"
-              >
-                <i className="fa-duotone fa-trash"></i>&nbsp;Remove Picture
-              </button>
+              {!file ? (
+                <div onClick={handleImgClickUpload} className="cursor-pointer">
+                  <i className="fa-duotone fa-add"></i>
+                  &nbsp;Add Picture
+                </div>
+              ) : (
+                <div onClick={handleDeleteImg} className="cursor-pointer">
+                  <i className="fa-duotone fa-trash"></i>&nbsp;Remove Picture
+                </div>
+              )}
             </div>
           </div>
           <p className="text-xs text-slate-500">
@@ -182,7 +177,6 @@ const Edit = ({ userId, userData }) => {
           <input
             className="mt-2 border-2 py-1 px-2 w-6/12"
             type="text"
-            // defaultValue={userData.name}
             placeholder="Enter name"
             name="name"
             value={inputList.name}
@@ -195,7 +189,6 @@ const Edit = ({ userId, userData }) => {
           <input
             className="mt-2 border-2 py-1 px-2 w-6/12"
             type="text"
-            // defaultValue={userData.userName}
             name="userName"
             value={inputList.userName}
             onChange={handleInputChange}
@@ -208,7 +201,6 @@ const Edit = ({ userId, userData }) => {
           <input
             className="mt-2 border-2 py-1 px-2 w-6/12"
             type="text"
-            // defaultValue={userData.role}
             name="role"
             value={inputList.role}
             onChange={handleInputChange}
@@ -220,13 +212,16 @@ const Edit = ({ userId, userData }) => {
           </p>
           <textarea
             className="mt-2 border-2 py-1 px-2 w-6/12 h-28 d-block"
-            // defaultValue={userData.description}
             placeholder="Describe yourself in 140 words"
             name="description"
             value={inputList.description}
             onChange={handleInputChange}
             required
-          ></textarea>
+          >
+            {/* A digital product designer from India, leading design at ERM and
+          building practical design systems for sustainability software. it
+          needs to . */}
+          </textarea>
           <button className="mt-2 block bg-gray-700 hover:bg-gray-800 font-medium px-4 py-2 text-white">
             Save
           </button>
@@ -236,4 +231,4 @@ const Edit = ({ userId, userData }) => {
   );
 };
 
-export default Edit;
+export default Create;
