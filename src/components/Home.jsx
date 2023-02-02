@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getDocs, where } from "firebase/firestore";
+import { doc, getDocs, increment, updateDoc, where } from "firebase/firestore";
 import { db } from "../firebase";
 
 import { collection, query } from "firebase/firestore";
@@ -23,14 +23,21 @@ const Home = () => {
       try {
         const querySnapshot = await getDocs(q);
         const user = [];
+        let userId = "";
 
         querySnapshot.forEach((doc) => {
           // doc.data() is never undefined for query doc snapshots
           newData = doc.data();
           user.push({ ...doc.data() });
-          console.log(user.length);
+          console.log(user);
 
           setData([...data, newData]);
+          console.log(doc.id);
+          userId = doc.id;
+        });
+        const userDataRef = doc(db, "User_Data", userId);
+        await updateDoc(userDataRef, {
+          clickCount: increment(1),
         });
       } catch (error) {
         console.log(error);

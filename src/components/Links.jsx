@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 
-const Links = ({ userId }) => {
+const Links = ({ userId, userData }) => {
   const navigate = useNavigate();
 
   const [inputList, setInputList] = useState([
@@ -57,6 +57,7 @@ const Links = ({ userId }) => {
     try {
       const docRef = doc(db, "User_Data", userId);
       await updateDoc(docRef, { links: inputList });
+      navigate(`/${userData.userName}`);
     } catch (error) {
       console.log(error);
     }

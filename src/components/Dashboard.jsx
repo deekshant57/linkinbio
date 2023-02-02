@@ -1,10 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebase";
+import { getAuth, signOut } from "firebase/auth";
 
-const Dashboard = ({ isSignedUp }) => {
-  //   const [isSignedUp, setIsSignedUp] = useState(false);
+const Dashboard = ({ userId, isSignedUp }) => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    const auth = getAuth();
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        sessionStorage.removeItem("Auth Token");
+        navigate("/login");
+      })
+      .catch((error) => {
+        // An error happened.
+        console.log(error);
+      });
+  };
   //   useEffect(() => {
   //     const fetchUser = async () => {
   //       try {
@@ -34,9 +48,11 @@ const Dashboard = ({ isSignedUp }) => {
   return (
     <div>
       {isSignedUp ? (
-        <div>
+        <div className="flex flex-col">
+          <div>{24} profile views</div>
           <Link to="/edit">Edit Profile</Link>
           <Link to="/links">Customise Links</Link>
+          <button onClick={handleLogout}>Signout</button>
         </div>
       ) : (
         <Link to="/create">Create Profile</Link>

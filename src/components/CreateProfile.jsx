@@ -114,16 +114,16 @@ const Create = ({ userId }) => {
         ...inputList,
         createdAt: Timestamp.now(),
       });
-      navigate("/:userName");
+      navigate(`/`);
     } catch (error) {
       console.log(error);
     }
   };
   return (
     <div className="container max-w-xl m-auto">
-      <a href="/">
+      {/* <a href="/">
         <i className="fa-duotone fa-arrow-left"></i>&nbsp;Home
-      </a>
+      </a> */}
       <h4 className="text-2xl mt-2 font-Inter font-medium antialiased">
         Customise Profile
       </h4>

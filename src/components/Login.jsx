@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 
-const Login = () => {
+const Login = ({ chooseUid }) => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -11,20 +11,19 @@ const Login = () => {
 
   const onLogin = (e) => {
     e.preventDefault();
-    console.log("first");
     const authentication = getAuth();
-    console.log(authentication);
-
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // signed in
         const user = userCredential.user;
-        navigate("/");
+
         sessionStorage.setItem(
           "Auth Token",
           userCredential._tokenResponse.refreshToken
         );
-        console.log("user", user);
+        chooseUid(user.uid);
+        navigate("/");
+        console.log("user", user.uid);
         console.log("token", sessionStorage.getItem("Auth Token"));
       })
       .catch((error) => {
@@ -49,6 +48,7 @@ const Login = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            autoComplete="true"
           />
           <p className="text-xs text-slate-500 mt-3">Password</p>
           <input

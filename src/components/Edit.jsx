@@ -119,8 +119,8 @@ const Edit = ({ userId, userData }) => {
       const docRef = doc(db, "User_Data", userId);
       const updatedData = { ...inputList, updatedaAt: serverTimestamp() };
       await updateDoc(docRef, updatedData);
-
-      navigate(`/${inputList.userName}`);
+      //   console.log(`${inputList.userName}`);
+      navigate(`${inputList.userName}`);
     } catch (error) {
       console.log(error);
     }
