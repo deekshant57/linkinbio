@@ -114,7 +114,7 @@ const Create = ({ userId }) => {
         ...inputList,
         createdAt: Timestamp.now(),
       });
-      navigate(`/`);
+      navigate(`/${inputList.userName}`);
     } catch (error) {
       console.log(error);
     }

@@ -24,6 +24,8 @@ function App() {
 
   const chooseUid = (id) => {
     setUserId(id);
+    setIsLoggedIn(true);
+    // fetchUser();
   };
   //to see if user is logged in
   useEffect(() => {
@@ -40,14 +42,29 @@ function App() {
     //   }
     // });
     let authToken = sessionStorage.getItem("Auth Token");
+    // checking auth token from localStorage to keep the session persistent
+    let authTokenLS = localStorage.getItem("Auth Token");
     console.log(authToken);
     console.log("userid", userId);
 
-    if (authToken) {
+    if ((authToken, authTokenLS)) {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          const uid = user.uid;
+          console.log(uid);
+          setUserId(uid);
+          // setIsLoggedIn(true);
+          // fetchUser();
+        } else {
+          // navigate("/login");
+          console.log("User is logged out");
+        }
+      });
       setIsLoggedIn(true);
       fetchUser();
+      navigate("/");
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, userId, isSignedUp]);
 
   const fetchUser = async () => {
     try {
@@ -73,7 +90,10 @@ function App() {
           path="/"
           element={
             <Protected isLoggedIn={isLoggedIn}>
-              <Dashboard isSignedUp={isSignedUp}></Dashboard>
+              <Dashboard
+                isSignedUp={isSignedUp}
+                userData={userData}
+              ></Dashboard>
             </Protected>
           }
         ></Route>
@@ -107,7 +127,7 @@ function App() {
           }
         ></Route>
         <Route path=":userName" element={<Home></Home>}></Route>
-        <Route path="/*" element={<Error></Error>}></Route>
+        <Route path="*" element={<Login chooseUid={chooseUid}></Login>}></Route>
         <Route path="/error" element={<Error></Error>}></Route>
       </Routes>
     </div>

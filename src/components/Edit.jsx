@@ -120,14 +120,14 @@ const Edit = ({ userId, userData }) => {
       const updatedData = { ...inputList, updatedaAt: serverTimestamp() };
       await updateDoc(docRef, updatedData);
       //   console.log(`${inputList.userName}`);
-      navigate(`${inputList.userName}`);
+      navigate(`/${inputList.userName}`);
     } catch (error) {
       console.log(error);
     }
   };
   return (
     <div className="container max-w-xl m-auto">
-      <button onClick={() => navigate("/")}>
+      <button onClick={() => navigate("/")} className="hover:underline">
         <i className="fa-duotone fa-arrow-left"></i>&nbsp;Home
       </button>
       <h4 className="text-2xl mt-2 font-Inter font-medium antialiased">

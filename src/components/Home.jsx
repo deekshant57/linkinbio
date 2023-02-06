@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { doc, getDocs, increment, updateDoc, where } from "firebase/firestore";
 import { db } from "../firebase";
+import userImg from "../assets/user.jpg";
 
 import { collection, query } from "firebase/firestore";
 import { useNavigate, useParams } from "react-router-dom";
@@ -53,7 +54,13 @@ const Home = () => {
         {data.length > 0 ? (
           <div className="flex flex-col gap-y-4 px-4 pt-10 h-screen center">
             <div>
-              <img className="rounded-full w-14" src={data[0].img} alt="" />
+              <div className="rounded-full ">
+                <img
+                  className="object-cover rounded-full w-14 h-14"
+                  src={data[0].img ? data[0].img : userImg}
+                  alt=""
+                />
+              </div>
               <h3 className="text-xl font-medium subpixel-antialiased text-slate-800 mt-2 font-Inter">
                 {data[0].name}
               </h3>
