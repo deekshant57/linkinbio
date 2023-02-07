@@ -4,6 +4,7 @@ import { db, storage } from "../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import userProfile from "../assets/user.jpg";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Create = ({ userId }) => {
   const [file, setFile] = useState("");
@@ -114,9 +115,11 @@ const Create = ({ userId }) => {
         ...inputList,
         createdAt: Timestamp.now(),
       });
-      navigate(`/`);
+      toast.success("Profile Created");
+      navigate(`/${inputList.userName}`);
     } catch (error) {
       console.log(error);
+      toast.error("Error:", error);
     }
   };
   return (

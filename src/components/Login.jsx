@@ -1,6 +1,7 @@
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { auth } from "../firebase";
 
 const Login = ({ chooseUid }) => {
@@ -21,6 +22,10 @@ const Login = ({ chooseUid }) => {
           "Auth Token",
           userCredential._tokenResponse.refreshToken
         );
+        localStorage.setItem(
+          "Auth Token",
+          userCredential._tokenResponse.refreshToken
+        );
         chooseUid(user.uid);
         navigate("/");
         console.log("user", user.uid);
@@ -31,8 +36,10 @@ const Login = ({ chooseUid }) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
+        toast.error(error.message);
       });
   };
+
   return (
     <div>
       <h4 className="text-2xl mt-2 font-Inter font-medium antialiased">

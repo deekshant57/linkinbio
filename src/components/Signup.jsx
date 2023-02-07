@@ -1,6 +1,7 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { auth } from "../firebase";
 
 const Signup = () => {
@@ -18,12 +19,14 @@ const Signup = () => {
         const user = userCredential.user;
         console.log(user);
         console.log(user.uid);
+        toast.success("Signed up Successfully");
         navigate("/login");
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
+        toast.error(error.message);
       });
   };
   return (

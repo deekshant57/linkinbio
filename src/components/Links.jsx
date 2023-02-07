@@ -1,6 +1,7 @@
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { db } from "../firebase";
 
 const Links = ({ userId, userData }) => {
@@ -57,9 +58,11 @@ const Links = ({ userId, userData }) => {
     try {
       const docRef = doc(db, "User_Data", userId);
       await updateDoc(docRef, { links: inputList });
+      toast.success("Updated successfully");
       navigate(`/${userData.userName}`);
     } catch (error) {
       console.log(error);
+      toast.error("Error:", error);
     }
   };
 
@@ -100,7 +103,7 @@ const Links = ({ userId, userData }) => {
   }, []);
   return (
     <div>
-      <div onClick={() => navigate("/")}>
+      <div onClick={() => navigate("/")} className="hover:underline">
         <i className="fa-duotone fa-arrow-left"></i>&nbsp;Home
       </div>
       <h4 className="text-2xl mt-2 font-Inter font-medium antialiased">
