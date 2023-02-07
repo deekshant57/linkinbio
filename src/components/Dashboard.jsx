@@ -47,6 +47,9 @@ const Dashboard = ({ userId, isSignedUp, userData }) => {
   //     return () => {};
   //   }, []);
   useEffect(() => {
+    if (!isSignedUp) {
+      navigate("/create");
+    }
     return () => {};
   }, [isSignedUp]);
 

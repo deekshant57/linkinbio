@@ -122,7 +122,7 @@ const Edit = ({ userId, userData }) => {
       await updateDoc(docRef, updatedData);
       toast.success("Updated successfully");
       //   console.log(`${inputList.userName}`);
-      navigate(`/${inputList.userName}`);
+      navigate("/");
     } catch (error) {
       console.log(error);
       toast.error("Error:", error);
