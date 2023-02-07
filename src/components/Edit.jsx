@@ -133,7 +133,7 @@ const Edit = ({ userId, userData }) => {
       <button onClick={() => navigate("/")} className="hover:underline">
         <i className="fa-duotone fa-arrow-left"></i>&nbsp;Home
       </button>
-      <h4 className="text-2xl mt-2 font-Inter font-medium antialiased">
+      <h4 className="text-2xl mt-2 font-Inter font-medium antialiased w-9/12 mx-auto">
         Customise Profile
       </h4>
 
