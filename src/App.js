@@ -13,6 +13,8 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import { auth, db } from "./firebase";
 import Protected from "./utils/Protected";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -62,7 +64,7 @@ function App() {
       });
       setIsLoggedIn(true);
       fetchUser();
-      navigate("/");
+      // navigate("/");
     }
   }, [isLoggedIn, userId, isSignedUp]);
 
@@ -130,6 +132,18 @@ function App() {
         <Route path="*" element={<Login chooseUid={chooseUid}></Login>}></Route>
         <Route path="/error" element={<Error></Error>}></Route>
       </Routes>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      ></ToastContainer>
     </div>
   );
 }

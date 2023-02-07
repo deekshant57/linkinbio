@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebase";
 import { getAuth, signOut } from "firebase/auth";
+import { toast } from "react-toastify";
 
 const Dashboard = ({ userId, isSignedUp, userData }) => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const Dashboard = ({ userId, isSignedUp, userData }) => {
         sessionStorage.removeItem("Auth Token");
         localStorage.removeItem("Auth Token");
         console.log(sessionStorage.getItem("Auth Token"));
+        toast.success("Logged Out Successfully");
         navigate("/login");
       })
       .catch((error) => {
@@ -52,19 +54,15 @@ const Dashboard = ({ userId, isSignedUp, userData }) => {
 
   return (
     <div>
-      {isSignedUp ? (
-        <div className="flex flex-col">
-          <div>{userData.clickCount} profile views</div>
-          <Link to="/edit">Edit Profile</Link>
-          <Link to="/links">Customise Links</Link>
-          <Link to={`${userData.userName}`} target="_blank">
-            View Profile
-          </Link>
-          <button onClick={handleLogout}>Signout</button>
-        </div>
-      ) : (
-        navigate("/create")
-      )}
+      <div className="flex flex-col">
+        <div>{userData.clickCount} profile views</div>
+        <Link to="/edit">Edit Profile</Link>
+        <Link to="/links">Customise Links</Link>
+        <Link to={`${userData.userName}`} target="_blank">
+          View Profile
+        </Link>
+        <button onClick={handleLogout}>Signout</button>
+      </div>
     </div>
   );
 };

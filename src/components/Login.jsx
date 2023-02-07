@@ -1,6 +1,7 @@
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { auth } from "../firebase";
 
 const Login = ({ chooseUid }) => {
@@ -35,6 +36,7 @@ const Login = ({ chooseUid }) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
+        toast.error(error.message);
       });
   };
 

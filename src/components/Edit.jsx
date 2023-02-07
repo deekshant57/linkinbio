@@ -12,6 +12,7 @@ import { db, storage } from "../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { Link, useNavigate } from "react-router-dom";
 import userImg from "../assets/user.jpg";
+import { toast } from "react-toastify";
 
 const Edit = ({ userId, userData }) => {
   const [file, setFile] = useState("");
@@ -119,10 +120,12 @@ const Edit = ({ userId, userData }) => {
       const docRef = doc(db, "User_Data", userId);
       const updatedData = { ...inputList, updatedaAt: serverTimestamp() };
       await updateDoc(docRef, updatedData);
+      toast.success("Updated successfully");
       //   console.log(`${inputList.userName}`);
       navigate(`/${inputList.userName}`);
     } catch (error) {
       console.log(error);
+      toast.error("Error:", error);
     }
   };
   return (
@@ -149,7 +152,7 @@ const Edit = ({ userId, userData }) => {
                   ? inputList.img
                   : userImg
               }
-              alt=""
+              alt="user-Img"
             />
             <div className="flex flex-col justify-center">
               <input
