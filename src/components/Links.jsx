@@ -59,7 +59,7 @@ const Links = ({ userId, userData }) => {
       const docRef = doc(db, "User_Data", userId);
       await updateDoc(docRef, { links: inputList });
       toast.success("Updated successfully");
-      navigate(`/${userData.userName}`);
+      navigate("/");
     } catch (error) {
       console.log(error);
       toast.error("Error:", error);

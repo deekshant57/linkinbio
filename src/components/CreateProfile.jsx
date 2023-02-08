@@ -116,7 +116,7 @@ const Create = ({ userId }) => {
         createdAt: Timestamp.now(),
       });
       toast.success("Profile Created");
-      navigate(`/${inputList.userName}`);
+      navigate("/");
     } catch (error) {
       console.log(error);
       toast.error("Error:", error);

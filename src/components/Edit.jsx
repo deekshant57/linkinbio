@@ -15,7 +15,7 @@ import userImg from "../assets/user.jpg";
 import { toast } from "react-toastify";
 
 const Edit = ({ userId, userData }) => {
-  const [file, setFile] = useState("");
+  const [file, setFile] = useState(null);
   const [percent, setPercent] = useState(0);
   const [imgUrl, setImgUrl] = useState("");
   const inputRef = useRef(null);
@@ -79,10 +79,10 @@ const Edit = ({ userId, userData }) => {
   };
 
   useEffect(() => {
+    console.log("first run");
     if (isFilePicked) {
       handleUpload();
     }
-
     return () => {};
   }, [file]);
 
@@ -109,6 +109,7 @@ const Edit = ({ userId, userData }) => {
 
   const handleSubmitForm = async (e) => {
     e.preventDefault();
+    console.log("clickednow");
     console.log(inputList);
     try {
       // need to add uid as doc id
@@ -122,7 +123,7 @@ const Edit = ({ userId, userData }) => {
       await updateDoc(docRef, updatedData);
       toast.success("Updated successfully");
       //   console.log(`${inputList.userName}`);
-      navigate(`/${inputList.userName}`);
+      navigate("/home");
     } catch (error) {
       console.log(error);
       toast.error("Error:", error);
@@ -130,7 +131,7 @@ const Edit = ({ userId, userData }) => {
   };
   return (
     <div className="container max-w-xl m-auto">
-      <button onClick={() => navigate("/")} className="hover:underline">
+      <button onClick={() => navigate("/home")} className="hover:underline">
         <i className="fa-duotone fa-arrow-left"></i>&nbsp;Home
       </button>
       <h4 className="text-2xl mt-2 font-Inter font-medium antialiased w-9/12 mx-auto">
@@ -185,7 +186,6 @@ const Edit = ({ userId, userData }) => {
           <input
             className="mt-2 border-2 py-1 px-2 w-6/12"
             type="text"
-            // defaultValue={userData.name}
             placeholder="Enter name"
             name="name"
             value={inputList.name}
@@ -198,7 +198,6 @@ const Edit = ({ userId, userData }) => {
           <input
             className="mt-2 border-2 py-1 px-2 w-6/12"
             type="text"
-            // defaultValue={userData.userName}
             name="userName"
             value={inputList.userName}
             onChange={handleInputChange}
@@ -211,7 +210,6 @@ const Edit = ({ userId, userData }) => {
           <input
             className="mt-2 border-2 py-1 px-2 w-6/12"
             type="text"
-            // defaultValue={userData.role}
             name="role"
             value={inputList.role}
             onChange={handleInputChange}
@@ -223,14 +221,16 @@ const Edit = ({ userId, userData }) => {
           </p>
           <textarea
             className="mt-2 border-2 py-1 px-2 w-6/12 h-28 d-block"
-            // defaultValue={userData.description}
             placeholder="Describe yourself in 140 words"
             name="description"
             value={inputList.description}
             onChange={handleInputChange}
             required
           ></textarea>
-          <button className="mt-2 block bg-gray-700 hover:bg-gray-800 font-medium px-4 py-2 text-white">
+          <button
+            className="mt-2 block bg-gray-700 hover:bg-gray-800 font-medium px-4 py-2 text-white"
+            type="submit"
+          >
             Save
           </button>
         </form>

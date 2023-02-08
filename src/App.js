@@ -15,6 +15,8 @@ import { auth, db } from "./firebase";
 import Protected from "./utils/Protected";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Sidebar from "./components/Sidebar";
+import Layout from "./components/Layout";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -55,16 +57,13 @@ function App() {
           const uid = user.uid;
           console.log(uid);
           setUserId(uid);
-          // setIsLoggedIn(true);
-          // fetchUser();
+          setIsLoggedIn(true);
+          fetchUser();
         } else {
           // navigate("/login");
           console.log("User is logged out");
         }
       });
-      setIsLoggedIn(true);
-      fetchUser();
-      // navigate("/");
     }
   }, [isLoggedIn, userId, isSignedUp]);
 
@@ -86,19 +85,30 @@ function App() {
     }
   };
   return (
-    <div className="App container max-w-xl m-auto">
+    <div className="App">
       <Routes>
         <Route
           path="/"
           element={
             <Protected isLoggedIn={isLoggedIn}>
-              <Dashboard
-                isSignedUp={isSignedUp}
-                userData={userData}
-              ></Dashboard>
+              <Layout isSignedUp={isSignedUp} userData={userData}></Layout>
             </Protected>
           }
-        ></Route>
+        >
+          <Route
+            path="home"
+            element={<Dashboard userData={userData}></Dashboard>}
+          ></Route>
+          <Route
+            path="edit"
+            element={<Edit userId={userId} userData={userData}></Edit>}
+          ></Route>
+          <Route
+            path="links"
+            element={<Links userId={userId} userData={userData}></Links>}
+          ></Route>
+          <Route path=":userName" element={<Home></Home>}></Route>
+        </Route>
         <Route
           path="/login"
           element={<Login chooseUid={chooseUid}></Login>}
@@ -120,15 +130,7 @@ function App() {
             </Protected>
           }
         ></Route>
-        <Route
-          path="/links"
-          element={
-            <Protected isLoggedIn={isLoggedIn}>
-              <Links userId={userId} userData={userData}></Links>
-            </Protected>
-          }
-        ></Route>
-        <Route path=":userName" element={<Home></Home>}></Route>
+
         <Route path="*" element={<Login chooseUid={chooseUid}></Login>}></Route>
         <Route path="/error" element={<Error></Error>}></Route>
       </Routes>
